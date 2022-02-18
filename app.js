@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 // import routes
+const rootRoute = require('./routes/rootRoute');
 const authRoutes = require('./routes/authRoute');
 
 // app
@@ -21,20 +22,12 @@ const middleware = [
     express.urlencoded({ extended: true }),
     express.json()
 ]
-
 app.use(middleware);
 
 // use route
 app.use('/auth', authRoutes);
+app.use('/', rootRoute);
 
-
-
-// root route
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Root route.!'
-    })
-})
 
 // port listener 
 const PORT = process.env.PORT || 4040;
