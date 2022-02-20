@@ -5,14 +5,20 @@
                 <div class="card card-body">
                     <h4 class="mb-4">Login your account</h4>
                     <form method="POST" action="/auth/login">
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="email">Enter your email</label>
-                            <input type="email" name="email" placeholder="E-mail*" id="email" class="form-control" required />
-                        </div><br />
-                        <div class="form-group">
+                            <input type="email" name="email" placeholder="E-mail*" id="email" class="form-control <%= error.email ? 'is-invalid' : ''%>  " required />
+                            <div class="invalid-feedback">
+                                <%= error.email && error.email  %>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="password">Enter password</label>
-                            <input type="password" name="password" placeholder="Password*" id="password" class="form-control" required />
-                        </div><br />
+                            <input type="password" name="password" placeholder="Password*" id="password" class="form-control <%= error.password ? 'is-invalid' : ''%> " required />
+                            <div class="invalid-feedback">
+                                <%= error.password && error.password  %>
+                            </div>
+                        </div>
                         <input type="submit" value="Sign In" class="btn btn-outline-success" />
                     </form>
                     <a href="/auth/register" class="my-3 text-center"> Don't have an account? Signup</a>

@@ -44,7 +44,9 @@ const signupPostController = async(req, res, next) => {
             // console.log('user created success', createdUser); // TODO remove
 
         res.render('pages/auth/signup', {
-            title: 'Create a new account'
+            title: 'Create a new account',
+            error: {},
+            value: {}
         })
     } catch (error) {
         console.log(error);
@@ -56,8 +58,10 @@ const signupPostController = async(req, res, next) => {
 
 // login get 
 const loginGetController = (req, res, next) => {
+    console.log(req.session.isLoggedIn, req.session.user);
     res.render('pages/auth/login', {
-        title: 'Sign In'
+        title: 'Sign In',
+        error: {},
     })
 }
 
@@ -65,6 +69,14 @@ const loginGetController = (req, res, next) => {
 // login post
 const loginPostController = async(req, res, next) => {
     const { email, password } = req.body;
+
+    const errors = validationResult(req).formatWith(errorFormatter);
+    if (!errors.isEmpty()) {
+        return res.render('pages/auth/login', {
+            title: 'Sign In',
+            error: errors.mapped(),
+        })
+    }
 
     try {
         const user = await User.findOne({ email: email });
@@ -81,10 +93,12 @@ const loginPostController = async(req, res, next) => {
                     message: `Invalid Credential.!`
                 })
             } else {
-                console.log(`Successfully login`, user);
+                req.session.isLoggedIn = true;
+                req.session.user = user;
                 // rerender
                 res.render('pages/auth/login', {
-                    title: 'Sign In'
+                    title: 'Sign In',
+                    error: {},
                 })
             }
         }
