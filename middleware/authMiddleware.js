@@ -27,7 +27,16 @@ const isAuthenticated = (req, res, next) => {
     next();
 }
 
+// authenticate user don't see sign up & sign in implementation
+const isUnAuthenticated = (req, res, next) => {
+    if (req.session.isLoggedIn) {
+        return res.redirect('/dashboard');
+    }
+    next();
+}
+
 module.exports = {
     bindUserWithRequest,
-    isAuthenticated
+    isAuthenticated,
+    isUnAuthenticated
 }

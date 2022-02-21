@@ -1,0 +1,8 @@
+{
+    "name": "Blog App",
+    "facility": {
+        "userSignIn": false,
+        "userSignUp": true,
+        "email": "dev@gmail.com"
+    }
+}

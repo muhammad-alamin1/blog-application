@@ -1,0 +1,8 @@
+{
+    "name": "Programming Blog Application",
+    "facility": {
+        "userSignIn": true,
+        "userSignUp": true,
+        "email": "prod@gmail.com"
+    }
+}

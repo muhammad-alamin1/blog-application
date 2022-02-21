@@ -1,10 +1,12 @@
 // dependencies
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-require('dotenv').config();
+const flash = require('connect-flash');
+const config = require('config');
 
 // import routes
 const rootRoute = require('./routes/rootRoute');
@@ -30,10 +32,21 @@ const store = new MongoDBStore({
     expires: 60 * 60 * 1000 * 2
 });
 
+// if (app.get('env').toLowerCase() === 'development') {
+//     console.log(config.dev.name)
+// } else {
+//     console.log(config.prod.name)
+// }
+
+console.log(config.get('facility.email'))
+
+// use morgan middleware development
+if (app.get('env').toLowerCase() === 'development') {
+    app.use(morgan('dev'));
+}
 
 // middleware
 const middleware = [
-    morgan('dev'),
     express.static('public'),
     express.urlencoded({ extended: true }),
     express.json(),
@@ -44,7 +57,8 @@ const middleware = [
         store: store
     }),
     bindUserWithRequest(),
-    setLocals()
+    setLocals(),
+    flash()
 ]
 app.use(middleware);
 

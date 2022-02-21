@@ -1,0 +1,8 @@
+{
+    "name": "blog-application",
+    "facility": {
+        "userSignIn": true,
+        "userSignUp": true,
+        "email": "default@gmail.com"
+    }
+}

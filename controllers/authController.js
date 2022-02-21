@@ -2,13 +2,15 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const errorFormatter = require('../utilities/validationErrorFormatter');
+const Flash = require('../utilities/Flash');
 
 // register get
 const signupGetController = (req, res, next) => {
     res.render('pages/auth/signup', {
         title: 'Create a new account',
         error: {},
-        value: {}
+        value: {},
+        flashMessages: Flash.getMessage(req)
     })
 }
 
@@ -18,6 +20,8 @@ const signupPostController = async(req, res, next) => {
 
     // validation error check
     const errors = validationResult(req).formatWith(errorFormatter);
+
+    req.flash('fail', 'Please check your form!')
     if (!errors.isEmpty()) {
         return res.render('pages/auth/signup', {
             title: 'Create a new account',
@@ -26,7 +30,8 @@ const signupPostController = async(req, res, next) => {
                 username,
                 email,
                 password,
-            }
+            },
+            flashMessages: Flash.getMessage(req)
         })
     }
 
@@ -40,14 +45,11 @@ const signupPostController = async(req, res, next) => {
             password: hashPassword,
         })
 
-        let createdUser = await user.save()
-            // console.log('user created success', createdUser); // TODO remove
+        await user.save();
 
-        res.render('pages/auth/signup', {
-            title: 'Create a new account',
-            error: {},
-            value: {}
-        })
+        req.flash('success', 'User saved successfully');
+
+        res.redirect('/auth/login');
     } catch (error) {
         console.log(error);
         next(error);
@@ -58,10 +60,11 @@ const signupPostController = async(req, res, next) => {
 
 // login get 
 const loginGetController = (req, res, next) => {
-    console.log(req.session.isLoggedIn, req.session.user);
+    // console.log(req.session.isLoggedIn, req.session.user);
     res.render('pages/auth/login', {
         title: 'Sign In',
         error: {},
+        flashMessages: Flash.getMessage(req)
     })
 }
 
@@ -71,35 +74,45 @@ const loginPostController = async(req, res, next) => {
     const { email, password } = req.body;
 
     const errors = validationResult(req).formatWith(errorFormatter);
+
     if (!errors.isEmpty()) {
+        req.flash('fail', 'Please check your form!')
         return res.render('pages/auth/login', {
             title: 'Sign In',
             error: errors.mapped(),
+            flashMessages: Flash.getMessage(req)
         })
     }
 
     try {
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.json({
-                success: false,
-                message: `Invalid Credential.!`
+            req.flash('fail', 'Provide valid credentials');
+            return res.render('pages/auth/login', {
+                title: 'Sign In',
+                error: {},
+                flashMessages: Flash.getMessage(req)
             })
         } else {
             const matchPassword = await bcrypt.compare(password, user.password);
             if (!matchPassword) {
-                return res.json({
-                    success: false,
-                    message: `Invalid Credential.!`
+                req.flash('fail', 'Provide valid credentials');
+                return res.render('pages/auth/login', {
+                    title: 'Sign In',
+                    error: {},
+                    flashMessages: Flash.getMessage(req)
                 })
             } else {
                 req.session.isLoggedIn = true;
                 req.session.user = user;
-                // rerender
-                res.render('pages/auth/login', {
-                    title: 'Sign In',
-                    error: {},
-                })
+                req.session.save(err => {
+                    if (err) {
+                        console.log(err);
+                        return next(err);
+                    }
+                    req.flash('success', 'Successfully logged in!');
+                    res.redirect('/dashboard');
+                });
             }
         }
     } catch (error) {
@@ -111,7 +124,15 @@ const loginPostController = async(req, res, next) => {
 
 // log out
 const logoutController = (req, res, next) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.log(err);
+            return next(err);
+        }
+        // req.flash('success', 'Successfully logout!');
+        res.redirect('/auth/login');
 
+    });
 }
 
 
