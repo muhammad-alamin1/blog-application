@@ -14,6 +14,11 @@ const profileSchema = new Schema({
         trim: true,
         maxLength: 30
     },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     title: {
         type: String,
         trim: true,

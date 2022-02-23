@@ -51,7 +51,6 @@ const signupPostController = async(req, res, next) => {
 
         res.redirect('/auth/login');
     } catch (error) {
-        console.log(error);
         next(error);
     }
 
@@ -107,7 +106,6 @@ const loginPostController = async(req, res, next) => {
                 req.session.user = user;
                 req.session.save(err => {
                     if (err) {
-                        console.log(err);
                         return next(err);
                     }
                     req.flash('success', 'Successfully logged in!');
@@ -116,7 +114,6 @@ const loginPostController = async(req, res, next) => {
             }
         }
     } catch (error) {
-        console.log(error);
         next(error);
     }
 }
