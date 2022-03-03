@@ -7,6 +7,7 @@ const config = require('config');
 // import routes && middleware
 const allRoutes = require('./routes/routes');
 const allMiddleware = require('./middleware/middleware');
+const { pageNotFoundError, commonErrorHandler } = require('./middleware/commonErrorMiddleware');
 
 // app
 const app = express();
@@ -24,24 +25,11 @@ allMiddleware(app);
 // using route from route directory
 allRoutes(app);
 
-// common error checker start
-app.use((req, res, next) => {
-    const error = new Error(`404 page not found.!`);
-    error.status = 404;
-    next(error);
-})
+// 404 error
+app.use(pageNotFoundError);
 
-app.use((err, req, res, next) => {
-        if (err.status === 404) {
-            return res.render('pages/error/404', {
-                flashMessages: {}
-            })
-        }
-        res.render('pages/error/500', {
-            flashMessages: {}
-        })
-    })
-    // common error checker end
+// default error
+app.use(commonErrorHandler);
 
 // port listener 
 const PORT = process.env.PORT || 4040;

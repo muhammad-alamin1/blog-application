@@ -16,14 +16,16 @@ const upload = multer({
         fileSize: 1024 * 1024 * 5
     },
     fileFilter: (req, file, callback) => {
-        const types = /jpeg|jpg|png|gif/;
+        const types = /.jpeg|.jpg|.png|.gif/;
         const extName = types.test(path.extname(file.originalname).toLowerCase());
         const mimeType = types.test(file.mimeType);
 
-        if (extName && mimeType) {
+        if (file.mimetype === 'image/jpeg' ||
+            file.mimetype === 'image/png' ||
+            file.mimetype === 'image/jpg') {
             callback(null, true);
         } else {
-            callback(new Error(`Only support jpeg, jpg, png, gif`));
+            callback(new Error(`Only support jpeg, jpg, png`));
         }
     }
 });

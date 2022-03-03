@@ -6,7 +6,6 @@ const profileSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
     },
     name: {
         type: String,
@@ -22,28 +21,30 @@ const profileSchema = new Schema({
     title: {
         type: String,
         trim: true,
-        maxLength: 100
+        maxLength: 100,
+        required: true
     },
     bio: {
         type: String,
         trim: true,
-        maxLength: 500
+        maxLength: 500,
+        required: true
     },
-    profilePic: String,
-    links: {
-        website: String,
-        facebook: String,
-        twitter: String,
-        github: String
-    },
-    posts: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-    }],
-    bookmarks: [{
-        type: Schema.Types.ObjectId,
-        ref: ' Post'
-    }]
+    // profilePics: String,
+    // links: {
+    //     website: String,
+    //     facebook: String,
+    //     twitter: String,
+    //     github: String
+    // },
+    // posts: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Post'
+    // }],
+    // bookmarks: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: ' Post'
+    // }]
 
 }, { timestamps: true });
 

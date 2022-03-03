@@ -15,6 +15,7 @@ const postSchema = new Schema({
     body: {
         type: String,
         required: true,
+        maxLength: 3000,
     },
     author: {
         type: Schema.Types.ObjectId,
@@ -33,11 +34,11 @@ const postSchema = new Schema({
     }],
     dislikes: [{
         type: Schema.Types.ObjectId,
-        ref: ' User'
+        ref: 'User'
     }],
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: Comment
+        ref: 'Comment'
     }]
 }, { timestamps: true })
 
