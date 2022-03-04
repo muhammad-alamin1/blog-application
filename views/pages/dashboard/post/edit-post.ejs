@@ -1,0 +1,61 @@
+<%- include('../../../partials/header.ejs') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css" integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="/dashboard">Dashboard</a><br>
+                <a href="/dashboard/create-profile">Create Profile</a><br>
+                <a href="/posts/create">Create Post</a>
+            </div>
+            <div class="col-md-10">
+                <h3>Update Your Post</h3>
+                <div class="mx-5 card card-body">
+                    <form action="/posts/create" method="POST" enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label for="title">Enter your update post title</label>
+                            <input type="text" name="title" id="title" class="form-control <%= error.title ? 'is-invalid' : ''%>  " value="<%= post.title %> ">
+                            <div class="invalid-feedback">
+                                <%= error.title %>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="tiny-mce-post-body">Enter your update post body</label>
+                            <textarea name="body" id="tiny-mce-post-body" cols="30" rows="10" class="form-control <%= error.body ? 'is-invalid' : ''%> "> <%= post.body %> </textarea>
+                            <div class="invalid-feedback">
+                                <%= error.body %>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="tags">Enter update some tags (max 10)</label>
+                            <input type="text" name="tags" id="tags" placeholder="tag1, tags2" class="form-control <%= error.tags ? 'is-invalid' : ''%> " value="<%= post.tags.length > 0 ? post.tags.join(', ') : '' %> ">
+                            <div class="invalid-feedback">
+                                <%= error.tags %>
+                            </div>
+                        </div>
+                        <% if(post.thumbnail) { %>
+                            <label for="">Post thumbnail</label>
+                            <img src="<%= post.thumbnail %> " alt="post thumbnail" class="img-fluid mb-4" id="thumbnail">
+                            <% } %>
+                                <div class="form-group mb-3">
+                                    <div class="custom-file ">
+                                        <input type="file" name="post-thumbnail" id="custom-file-input">
+                                        <label for="inputGroupFile" class="custom-file-label"> Updated Choose File</label>
+                                    </div>
+                                </div>
+                                <input type="submit" value="Update Post" class="btn btn-outline-success my-3" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <%- include('../../../partials/footer.ejs') %>
+        <script type="text/javascript" src='https://cdn.tiny.cloud/1/op3c6nzdt9wovnx5e1hqhq7zwgd8cxcivhzyxfsusc6wco6j/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+        </script>
+        <script src="/scripts/tinyMce.js"></script>
+        </body>
+
+        </html>

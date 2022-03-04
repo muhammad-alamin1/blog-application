@@ -36,6 +36,7 @@ const createPostPostController = async(req, res, next) => {
 
     if (tags) {
         tags = tags.split(',');
+        tags = tags.map(t => t.trim());
     }
 
     let readTime = readingTime(body).text;
@@ -74,8 +75,75 @@ const createPostPostController = async(req, res, next) => {
     // })
 }
 
+// edit post get controller
+const editPostGetController = async(req, res, next) => {
+    let postId = req.params.postId;
+
+    let post = await Post.findOne({ author: req.user._id, _id: postId });
+
+    try {
+        if (!post) {
+            let error = new Error('404 Not Found');
+            error.status = 404;
+            throw error;
+        } else {
+            res.render('pages/dashboard/post/edit-post', {
+                title: 'edit post',
+                error: {},
+                flashMessages: Flash.getMessage(req),
+                post,
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
+// edit post post controller
+const editPostPostController = async(req, res, next) => {
+    let { title, body, tags } = req.body;
+    let errors = validationResult(req).formatWith(errorFormatter);
+
+    try {
+        let post = await Post.findOne({ author: req.user._id, _id: req.params.postId });
+        if (!post) {
+            let error = new Error('404 Not Found');
+            error.status = 404;
+            throw error;
+        }
+
+        if (!errors.isEmpty()) {
+            res.render('pages/dashboard/post/create-post', {
+                title: 'Create New Post',
+                error: errors.mapped(),
+                flashMessages: Flash.getMessage(req),
+                post
+            })
+        }
+
+        if (tags) {
+            tags = tags.split(',');
+            tags = tags.map(t => t.trim());
+        }
+
+        let thumbnail = post.thumbnail;
+        if (req.file) {
+            thumbnail = req.file.filename;
+        }
+
+        await Post.findOneAndUpdate({ _id: post._id }, { $set: { title, body, tags, thumbnail } }, { new: true });
+
+        req.flash('Success', 'Post updated successfully.!');
+        res.redirect('/posts/edit/' + post._id);
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     createPostGetController,
-    createPostPostController
+    createPostPostController,
+    editPostGetController,
+    editPostPostController
 }
