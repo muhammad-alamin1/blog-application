@@ -133,9 +133,48 @@ const editPostPostController = async(req, res, next) => {
 
         await Post.findOneAndUpdate({ _id: post._id }, { $set: { title, body, tags, thumbnail } }, { new: true });
 
-        req.flash('Success', 'Post updated successfully.!');
-        res.redirect('/posts/edit/' + post._id);
+        req.flash('success', 'Post updated successfully.!');
+        // res.redirect('/posts/edit/' + post._id);
+        res.redirect('/dashboard');
 
+    } catch (error) {
+        next(error);
+    }
+}
+
+// delete post
+const deletePost = async(req, res, next) => {
+    const { postId } = req.params;
+
+    try {
+        let post = await Post.findOne({ author: req.user._id, _id: postId });
+
+        if (!post) {
+            let error = new Error('404 Not Found');
+            error.status = 404;
+            throw error;
+        } else {
+            await Post.findOneAndDelete({ _id: postId });
+            await Profile.findOneAndUpdate({ user: req.user._id }, { $pull: { 'posts': postId } });
+
+            req.flash('success', 'Post delete successfully.!');
+            res.redirect('/posts');
+        }
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+// see get all posts 
+const seeGetAllPostsController = async(req, res, next) => {
+    try {
+        let posts = await Post.find({ author: req.user._id });
+        res.render('pages/dashboard/post/posts', {
+            title: 'My Posts',
+            posts,
+            flashMessages: Flash.getMessage(req),
+        });
     } catch (error) {
         next(error);
     }
@@ -145,5 +184,7 @@ module.exports = {
     createPostGetController,
     createPostPostController,
     editPostGetController,
-    editPostPostController
+    editPostPostController,
+    deletePost,
+    seeGetAllPostsController
 }

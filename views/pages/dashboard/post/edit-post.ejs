@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-md-2">
                 <a href="/dashboard">Dashboard</a><br>
+                <a href="/posts">My Posts</a><br>
                 <a href="/dashboard/create-profile">Create Profile</a><br>
                 <a href="/posts/create">Create Post</a>
             </div>
@@ -44,6 +45,7 @@
                                     </div>
                                 </div>
                                 <input type="submit" value="Update Post" class="btn btn-outline-success my-3" />
+                                <a class="btn btn-outline-danger" href="/posts/delete/<%= post._id %> ">Delete Post</a>
                     </form>
                 </div>
             </div>
