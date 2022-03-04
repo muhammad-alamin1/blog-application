@@ -61,7 +61,7 @@ const createPostPostController = async(req, res, next) => {
         let createdPost = await newPost.save();
         // await Profile.findByIdAndUpdate({ user: req.user._id }, { $push: { 'posts': createdPost._id } });
 
-        req.flash('Success', 'Post created successfully.!');
+        req.flash('success', 'Post created successfully.!');
         return res.redirect(`/posts/edit/${createdPost._id}`);
     } catch (error) {
         next(error);
@@ -135,7 +135,7 @@ const editPostPostController = async(req, res, next) => {
 
         req.flash('success', 'Post updated successfully.!');
         // res.redirect('/posts/edit/' + post._id);
-        res.redirect('/dashboard');
+        res.redirect('/posts');
 
     } catch (error) {
         next(error);
