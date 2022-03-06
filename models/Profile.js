@@ -30,21 +30,21 @@ const profileSchema = new Schema({
         maxLength: 500,
         required: true
     },
-    // profilePics: String,
-    // links: {
-    //     website: String,
-    //     facebook: String,
-    //     twitter: String,
-    //     github: String
-    // },
-    // posts: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Post'
-    // }],
-    // bookmarks: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: ' Post'
-    // }]
+    profilePics: String,
+    links: {
+        website: String,
+        facebook: String,
+        twitter: String,
+        github: String
+    },
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    bookmarks: [{
+        type: Schema.Types.ObjectId,
+        ref: ' Post'
+    }]
 
 }, { timestamps: true });
 
