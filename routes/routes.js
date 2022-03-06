@@ -1,3 +1,4 @@
+const apiRouter = require('../api/routes/apiRoute');
 const authRoute = require('./authRoute');
 const dashboardRoute = require('./dashboard');
 const postRouter = require('./postRoute');
@@ -19,6 +20,10 @@ const routes = [{
     {
         path: '/posts',
         handler: postRouter
+    },
+    {
+        path: '/api',
+        handler: apiRouter
     },
     {
         path: '/',
