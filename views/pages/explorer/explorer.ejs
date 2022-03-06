@@ -34,6 +34,27 @@
                                 <% } %>
                                     <% } %>
                 </section>
+                <% if(totalPages > 1) { %>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item <%= currPage === 1 ? 'disabled': '' %> ">
+                                <a href="<%= `/explorer?filter=${filter}&page=${currPage-1}` %> " class="page-link">Previous</a>
+                            </li>
+
+                            <% for(let i = 0; i <= totalPages; i++) { %>
+                                <li class="page-item <%= currPage === i ? 'active' : '' %> ">
+                                    <a href="<%= `/explorer?filter=${filter}&page=${i}` %> " class="page-link">
+                                        <%= i %>
+                                    </a>
+                                </li>
+                                <% } %>
+
+                                    <li class="page-item <%= currPage === totalPages ? 'disabled': '' %> ">
+                                        <a href="<%= `/explorer?filter=${filter}&page=${currPage+1}` %> " class="page-link">Next</a>
+                                    </li>
+                        </ul>
+                    </nav>
+                    <% } %>
             </div>
         </div>
     </div>

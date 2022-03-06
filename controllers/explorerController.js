@@ -48,18 +48,28 @@ const filterObject = (filter) => {
 // explorer get
 const explorerGetController = async(req, res, next) => {
     let filter = req.query.filter || 'latest';
+    let currPage = parseInt(req.query.page) || 1;
+    const itemPerPage = 1;
     let { order, filterObj } = filterObject(filter.toLowerCase());
 
     try {
         let posts = await Post.find(filterObj)
             .populate('author', 'username')
-            .sort(order === 1 ? '-createdAt' : 'createdAt');
+            .sort(order === 1 ? '-createdAt' : 'createdAt')
+            .skip((itemPerPage * currPage) - itemPerPage)
+            .limit(itemPerPage);
+
+        let totalPost = await Post.countDocuments();
+        let totalPages = totalPost / itemPerPage;
 
         res.render('pages/explorer/explorer', {
             title: 'All posts',
             filter,
             flashMessages: Flash.getMessage(req),
-            posts
+            posts,
+            totalPages,
+            currPage,
+            itemPerPage
         });
     } catch (error) {
         console.log(error);
