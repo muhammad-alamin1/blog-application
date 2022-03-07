@@ -14,7 +14,7 @@ const postLikesController = async(req, res, next) => {
     const userId = req.user._id;
 
     try {
-        let post = Post.findById(postId);
+        let post = await Post.findById(postId);
         if (post.dislikes.includes(userId)) {
             await Post.findOneAndUpdate({ _id: postId }, { $pull: { 'dislikes': userId } });
         }
@@ -56,7 +56,7 @@ const dislikePostController = async(req, res, next) => {
     const userId = req.user._id;
 
     try {
-        let post = Post.findById(postId);
+        let post = await Post.findById(postId);
         if (post.likes.includes(userId)) {
             await Post.findOneAndUpdate({ _id: postId }, { $pull: { 'likes': userId } });
         }

@@ -34,10 +34,10 @@
                                         <button class="btn btn-outline-danger btn-sm" disabled>DisLike (<% post.dislikes.length %>) </button>
                                         <p class="text-center text-muted">Please <a href="/auth/login">Login</a> </p>
                                         <% } else { %>
-                                            <button class="btn btn-outline-success btn-sm" id="likeBtn" data-post="<% post._id %> ">
+                                            <button class="btn btn-outline-success btn-sm" id="likeBtn" data-post="<%= post._id %> ">
                                                 <%= post.likes.includes(user._id) ? 'Liked': 'Like' %> (<%= post.likes.length %> )
                                             </button>
-                                            <button class="btn btn-outline-danger btn-sm" id="dislikeBtn" data-post="<% post._id %> ">
+                                            <button class="btn btn-outline-danger btn-sm" id="dislikeBtn" data-post="<%= post._id %> ">
                                                 <%= post.dislikes.includes(user._id) ? 'Disliked': 'dislike' %> (<%= post.dislikes.length %> )
                                             </button>
                                             <div class="mt-5">
@@ -88,3 +88,4 @@
 
     <%- include('../../partials/footer.ejs') %>
         <script src="/scripts/bookmark.js"></script>
+        <script src="/scripts/likeDislike.js"></script>
