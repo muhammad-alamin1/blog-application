@@ -106,7 +106,7 @@ const singlePageController = async(req, res, next) => {
             .populate({
                 path: 'comments',
                 populate: {
-                    path: 'replies.user',
+                    path: 'replies user',
                     select: 'username profilePics'
                 }
             })

@@ -20,7 +20,7 @@ window.onload = () => {
             })
             .catch(e => {
                 console.log(e);
-                // alert(e.response.data.error);
+                alert(e.message);
             })
     })
 
@@ -42,7 +42,7 @@ window.onload = () => {
             })
             .catch(e => {
                 console.log(e);
-                // alert(e.response.data.error);
+                alert(e.message);
             })
     })
 
