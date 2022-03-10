@@ -9,7 +9,7 @@
           </h3>
           <div class="d-flex">
             <small>
-              <%= moment(post.createdAt) %>, Posted By <%= post.author.username %> , <%= post.readTime %>
+              <%= moment(post.createdAt) %>, Posted By <a href="/author/<%= post.author._id %> "><%= post.author.username %></a> , <%= post.readTime %>
             </small>
             <% if(user) { %>
             <span class="ms-auto bookmark" data-post="<%= post._id %> ">

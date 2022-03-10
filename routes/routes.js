@@ -1,4 +1,5 @@
 const apiRouter = require('../api/routes/apiRoute');
+const authorRouter = require('./authorRoute');
 const authRoute = require('./authRoute');
 const dashboardRoute = require('./dashboard');
 const explorerRouter = require('./explorerRoute');
@@ -34,6 +35,10 @@ const routes = [{
     {
         path: '/search',
         handler: searchRouter
+    },
+    {
+        path: '/author',
+        handler: authorRouter
     },
     {
         path: '/',
