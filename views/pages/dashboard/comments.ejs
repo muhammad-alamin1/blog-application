@@ -1,0 +1,55 @@
+<%- include('../../partials/header.ejs') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css" integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <%- include('../../partials/sidebar.ejs') %>
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <h4>My Comments</h4>
+          <div class="mt-5" id="comment-holder">
+            <% if(comments.length===0) { %>
+            <p class="text-center text-muted">There is no comments</p>
+            <% } else { %>
+            <% for(let comment of comments.reverse()) { %>
+            <div class="media border">
+              <img src="<%= comment.user.profilePics %> " alt="" class="rounded-circle mx-3 my-3" style="width: 30px" />
+              <div class="media-body my-3">
+                <p>
+                  <%= comment.body %>
+                </p>
+                <div name="replies">
+                  <% if(comment.replies.length> 0) { %> <% for(let reply of comment.replies) { %>
+                  <div class="media mt-3">
+                    <img src="<%= reply.user.profilePics %> " alt="" class="align-self-start mr-3 rounded-circle" style="width: 30px" />
+                    <div class="media-body">
+                      <p>
+                        <%= reply.body %>
+                      </p>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% }%>
+                </div>
+                <div class="my-3">
+                  <input type="text" name="reply" id="" class="form-control" placeholder="Enter to reply" data-comment="<% comment._id %> " />
+                </div>
+              </div>
+            </div>
+            <% } %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+<script src="/scripts/comment.js"></script>
+</body>
+
+</html>

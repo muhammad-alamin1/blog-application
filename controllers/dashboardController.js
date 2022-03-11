@@ -3,20 +3,21 @@ const Profile = require('../models/Profile');
 const User = require('../models/User');
 const { validationResult } = require('express-validator');
 const errorFormatter = require('../utilities/validationErrorFormatter');
+const Comment = require("../models/Comment");
 
 // get dashboard
-const dashboardGetController = async(req, res, next) => {
+const dashboardGetController = async (req, res, next) => {
     res.render('pages/dashboard/dashboard', {
-            title: 'My Dashboard',
-            flashMessages: Flash.getMessage(req),
+        title: 'My Dashboard',
+        flashMessages: Flash.getMessage(req),
 
-        })
-        // try {
-        //     // const profile = await Profile.findOne({ user: req.user._id });
-        //     // if (profile) {
-        //     //     return res.render('pages/dashboard/dashboard', {
-        //     //         title: 'My Dashboard',
-        //     //         flashMessages: Flash.getMessage(req),
+    })
+    // try {
+    //     // const profile = await Profile.findOne({ user: req.user._id });
+    //     // if (profile) {
+    //     //     return res.render('pages/dashboard/dashboard', {
+    //     //         title: 'My Dashboard',
+    //     //         flashMessages: Flash.getMessage(req),
 
     //     //     })
     //     // } else {
@@ -29,7 +30,7 @@ const dashboardGetController = async(req, res, next) => {
 }
 
 // create profile get controller
-const createProfileGetController = async(req, res, next) => {
+const createProfileGetController = async (req, res, next) => {
     try {
         const profile = await Profile.findOne({ user: req.user._id });
         if (profile) {
@@ -48,7 +49,7 @@ const createProfileGetController = async(req, res, next) => {
 }
 
 // create profile post controller
-const createProfilePostController = async(req, res, next) => {
+const createProfilePostController = async (req, res, next) => {
     const errors = validationResult(req).formatWith(errorFormatter);
 
     if (!errors.isEmpty()) {
@@ -110,10 +111,60 @@ const editProfilePostController = (req, res, next) => {
 
 }
 
+// bookmarks get controller
+const bookmarksGetController = async (req, res, next) => {
+    try {
+        let profile = Profile.findOne({ user: req.user._id })
+            .populate({
+                path: 'bookmarks',
+                model: 'Post',
+                select: 'title, thumbnail'
+            })
+        res.json(profile)
+        res.render('pages/dashboard/bookmarks', {
+            title: 'My Bookmarks',
+            flashMessages: Flash.getMessage(req),
+            posts: profile.bookmarks
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+// comment get controller
+const commentGetController = async (req, res, next) => {
+    try {
+        let profile = await Profile.findOne({ user: req.user._id });
+        let comments = await Comment.find({ post: {$in: profile.post } })
+            .populate({
+                path: 'post',
+                select: 'title'
+            })
+            .populate({ 
+                path: 'user',
+                select: 'username profilePics'
+            })
+            .populate({ 
+                path: 'replies',
+                select: 'username profilePics'
+            })
+
+            res.render('pages/dashboard/comments', {
+                title: 'Comments',
+                flashMessages: Flash.getMessage(req),
+                comments
+            })
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     dashboardGetController,
     createProfileGetController,
     createProfilePostController,
     editProfileGetController,
-    editProfilePostController
+    editProfilePostController,
+    bookmarksGetController,
+    commentGetController
 }

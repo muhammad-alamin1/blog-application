@@ -15,7 +15,7 @@ const signupGetController = (req, res, next) => {
 }
 
 // register post 
-const signupPostController = async(req, res, next) => {
+const signupPostController = async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body;
 
     // validation error check
@@ -48,7 +48,6 @@ const signupPostController = async(req, res, next) => {
         await user.save();
 
         req.flash('success', 'User saved successfully');
-
         res.redirect('/auth/login');
     } catch (error) {
         next(error);
@@ -69,7 +68,7 @@ const loginGetController = (req, res, next) => {
 
 
 // login post
-const loginPostController = async(req, res, next) => {
+const loginPostController = async (req, res, next) => {
     const { email, password } = req.body;
 
     const errors = validationResult(req).formatWith(errorFormatter);
@@ -132,11 +131,51 @@ const logoutController = (req, res, next) => {
     });
 }
 
+// change pass get controller 
+const changePasswordGetController = (req, res, next) => {
+    res.render('pages/auth/changePassword', {
+        title: 'Change Password',
+        flashMessages: Flash.getMessage(req)
+    })
+}
+
+// change pass post controller
+const changePasswordPostController = async (req, res, next) => {
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+        req.flash('fail', 'Password does not match');
+        res.redirect('/auth/change-password');
+    }
+    
+    try {
+        let matchPass = await bcrypt.compare(oldPassword, req.user.password);
+
+        if (!matchPass) {
+            req.flash('fail', 'Invalid Password');
+            res.redirect('/auth/change-password');
+        }
+
+        let hashedPass = await bcrypt.hash(newPassword, 10);
+        await User.findOneAndUpdate(
+            { _id: req.user._id },
+            { $set: { password: hashedPass } }
+        )
+        req.flash('success', 'Password Updated Successfully.!');
+        return res.redirect('/auth/change-password');
+    } catch (error) {
+        next(error);
+    }
+
+}
+
 
 module.exports = {
     signupGetController,
     signupPostController,
     loginGetController,
     loginPostController,
-    logoutController
+    logoutController,
+    changePasswordGetController,
+    changePasswordPostController
 }

@@ -3,7 +3,9 @@ const {
     createProfileGetController,
     createProfilePostController,
     editProfilePostController,
-    editProfileGetController
+    editProfileGetController,
+    bookmarksGetController,
+    commentGetController
 } = require('../controllers/dashboardController');
 const { isAuthenticated } = require('../middleware/authMiddleware');
 const { profileValidator } = require('../validator/profileValidator');
@@ -16,5 +18,8 @@ router.post('/create-profile', isAuthenticated, createProfilePostController);
 
 router.get('/edit-profile', isAuthenticated, editProfileGetController);
 router.post('/edit-profile', isAuthenticated, editProfilePostController);
+
+router.get('/bookmarks', isAuthenticated, bookmarksGetController);
+router.get('/comments', isAuthenticated, commentGetController);
 
 module.exports = router;
