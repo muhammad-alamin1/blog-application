@@ -59,20 +59,13 @@ const createPostPostController = async(req, res, next) => {
 
     try {
         let createdPost = await newPost.save();
-        // await Profile.findByIdAndUpdate({ user: req.user._id }, { $push: { 'posts': createdPost._id } });
+        await Profile.findByIdAndUpdate({ user: req.user._id }, { $push: { 'posts': createdPost._id } });
 
         req.flash('success', 'Post created successfully.!');
         return res.redirect(`/posts/edit/${createdPost._id}`);
     } catch (error) {
         next(error);
     }
-
-    // res.render('pages/dashboard/post/create-post', {
-    //     title: 'Create New Post',
-    //     error: {},
-    //     flashMessages: Flash.getMessage(req),
-    //     value: {}
-    // })
 }
 
 // edit post get controller

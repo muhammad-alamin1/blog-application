@@ -2,7 +2,6 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const ejsLint = require('ejs-lint');
 
 // import routes && middleware
 const allRoutes = require('./routes/routes');

@@ -4,12 +4,16 @@
     <div class="col-md-6 offset-md-3">
       <div class="d-flex card card-body">
         <div>
-          <img src="<%= author.profilePics %> " alt="author" class="img-thumbnail img-fluid">
+          <img src="/uploads/<%= author.profilePics %> " alt="author" class="img-thumbnail img-fluid">
         </div>
-        <div class="ml-4">
+        <div class="ml-4 my-4">
           Name: <strong><%= author.username %> </strong> <br>
-          Email: <strong><%= author.email %> </strong>
-
+          Email: <strong><%= author.email %> </strong> <br>
+          Website: <strong><%= author.profile.links.website %> </strong> <br/>
+          Facebook: <strong><%= author.profile.links.facebook %> </strong><br/>
+          Twitter: <strong><%= author.profile.links.twitter %> </strong><br/>
+          Github: <strong><%= author.profile.links.github %> </strong><br/>
+          About: <%= author.profile.bio %>
         </div>
       </div>
     </div>
@@ -17,3 +21,5 @@
 </div>
 
 <%- include('../../partials/footer.ejs') %>
+</body>
+</html>

@@ -12,7 +12,7 @@ const authorProfileGetController = async (req, res, next) => {
                     path: 'posts'
                 }
             })
-
+        console.log(author)
         res.render('pages/explorer/author', {
             title: author.username,
             flashMessages: Flash.getMessage(req),

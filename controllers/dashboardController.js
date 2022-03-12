@@ -60,11 +60,8 @@ const createProfilePostController = async (req, res, next) => {
         });
     }
 
-    // website, facebook, twitter, github
-    const { title, name, email, bio } = req.body;
-    console.log(req.body);
-    const posts = {};
-    const bookmarks = {};
+    const { title, name, email, bio, website, facebook, twitter, github } = req.body;
+    // console.log(req.body);
 
     try {
         const profile = new Profile({
@@ -73,19 +70,19 @@ const createProfilePostController = async (req, res, next) => {
             email,
             title,
             bio,
-            // profilePics: req.user.profilePics,
-            // links: {
-            //     website: website || '',
-            //     facebook: facebook || '',
-            //     twitter: twitter || '',
-            //     github: github || '',
-            // },
-            // posts: [],
-            // bookmarks: []
+            profilePics: req.file.filename || '',
+            links: {
+                website: website || '',
+                facebook: facebook || '',
+                twitter: twitter || '',
+                github: github || '',
+            },
+            posts: [],
+            bookmarks: []
         })
 
         const createdProfile = await profile.save();
-        await User.findOne({ _id: req.user._id }, { $set: { profile: createdProfile._id } });
+        await User.findOneAndUpdate({ _id: req.user._id }, { $set: { profile: createdProfile._id, profilePics: createdProfile.profilePics } });
 
         req.flash('success', 'Profile created successfully');
         res.redirect('/dashboard');
@@ -93,12 +90,6 @@ const createProfilePostController = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
-    // res.render('pages/dashboard/create-profile', {
-    //     title: 'Create Profile',
-    //     flashMessages: Flash.getMessage(req),
-    //     error: {}
-    // });
 }
 
 // edit profile get controller 
@@ -135,25 +126,25 @@ const bookmarksGetController = async (req, res, next) => {
 const commentGetController = async (req, res, next) => {
     try {
         let profile = await Profile.findOne({ user: req.user._id });
-        let comments = await Comment.find({ post: {$in: profile.post } })
+        let comments = await Comment.find({ post: { $in: profile.post } })
             .populate({
                 path: 'post',
                 select: 'title'
             })
-            .populate({ 
+            .populate({
                 path: 'user',
                 select: 'username profilePics'
             })
-            .populate({ 
+            .populate({
                 path: 'replies',
                 select: 'username profilePics'
             })
 
-            res.render('pages/dashboard/comments', {
-                title: 'Comments',
-                flashMessages: Flash.getMessage(req),
-                comments
-            })
+        res.render('pages/dashboard/comments', {
+            title: 'Comments',
+            flashMessages: Flash.getMessage(req),
+            comments
+        })
     } catch (error) {
         next(error);
     }

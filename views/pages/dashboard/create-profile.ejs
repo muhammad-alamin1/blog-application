@@ -13,22 +13,18 @@
               <%= title %>
             </h3>
             <div>
-              <div class="profile-pics"></div>
-              <img src="<%= user.profilePics %>" alt="user" class="img-thumbnail img-fluid" id="profilePics"> <br>
-              <form action="/uploads/profilePics" id="profilePicsForm" method="POST">
-                <input type="file" name="profilePics" id="profilePicsFile" accept="image/*" />
-                <input type="button" value="Remove Profile Picture" style="display: <%= user.profilePics.includes('default.jpg') ? 'none' : 'block'  %>  " class="btn btn-danger btn-sm my-2" id="removeProfilePics" />
-                <!-- <input type="submit" value="Submit"> -->
-              </form>
-            </div>
-            <form action="/dashboard/create-profile" method="POST">
+            <form action="/dashboard/create-profile" method="POST" enctype="multipart/form-data" >
+              <div class="form-group">
+                <label for="profilePics">Upload Profile Image</label>
+                <input type="file" name="profilePics" id="profilePicsFile" accept="image/*" required />
+              </div>
               <div class="form-group my-2">
                 <label for="name">Enter name</label>
-                <input type="text" class="form-control" name="name" placeholder="Enter your name" , id="name" value="<%= user.username  %> " disabled />
+                <input type="text" class="form-control" name="name" placeholder="Enter your name" , id="name" value="<%= user.username  %> " />
               </div>
               <div class="form-group my-2">
                 <label for="email">Enter email address</label>
-                <input type="email" class="form-control" name="email" placeholder="Enter your email" , id="email" value="<%= user.email  %> " disabled />
+                <input type="email" class="form-control" name="email" placeholder="Enter your email" , id="email" value="<%= user.email  %> " />
               </div>
               <div class="form-group my-2">
                 <label for="title">Enter a short title</label>

@@ -108,7 +108,7 @@ const loginPostController = async (req, res, next) => {
                         return next(err);
                     }
                     req.flash('success', 'Successfully logged in!');
-                    res.redirect('/dashboard');
+                    res.redirect('/dashboard/create-profile');
                 });
             }
         }
@@ -147,7 +147,7 @@ const changePasswordPostController = async (req, res, next) => {
         req.flash('fail', 'Password does not match');
         res.redirect('/auth/change-password');
     }
-    
+
     try {
         let matchPass = await bcrypt.compare(oldPassword, req.user.password);
 

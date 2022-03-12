@@ -30,7 +30,10 @@ const profileSchema = new Schema({
         maxLength: 500,
         required: true
     },
-    profilePics: String,
+    profilePics: {
+        type: String,
+        required: true,
+    },
     links: {
         website: String,
         facebook: String,
