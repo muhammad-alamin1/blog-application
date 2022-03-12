@@ -19,7 +19,7 @@ router.get('/create-profile', isAuthenticated, createProfileGetController);
 router.post('/create-profile', isAuthenticated, upload.single('profilePics'), createProfilePostController);
 
 router.get('/edit-profile', isAuthenticated, editProfileGetController);
-router.post('/edit-profile', isAuthenticated, editProfilePostController);
+router.post('/edit-profile', isAuthenticated, upload.single('profilePics'), editProfilePostController);
 
 router.get('/bookmarks', isAuthenticated, bookmarksGetController);
 router.get('/comments', isAuthenticated, commentGetController);

@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const Profile = require('../models/Profile');
 
-const uploadProfilePic = async(req, res, next) => {
+const uploadProfilePic = async (req, res, next) => {
     console.log('file', req.file)
     if (req.file) {
         try {

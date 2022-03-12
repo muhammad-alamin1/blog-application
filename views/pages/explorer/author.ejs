@@ -9,10 +9,10 @@
         <div class="ml-4 my-4">
           Name: <strong><%= author.username %> </strong> <br>
           Email: <strong><%= author.email %> </strong> <br>
-          Website: <strong><%= author.profile.links.website %> </strong> <br/>
-          Facebook: <strong><%= author.profile.links.facebook %> </strong><br/>
-          Twitter: <strong><%= author.profile.links.twitter %> </strong><br/>
-          Github: <strong><%= author.profile.links.github %> </strong><br/>
+          Website: <a href="<%= author.profile.links.website%>" target="_blank"><strong><%= author.profile.links.website ? author.profile.links.website : '' %> </strong> </a><br />
+          Facebook: <a href="<%= author.profile.links.facebook%>" target="_blank"><strong><%= author.profile.links.facebook ? author.profile.links.facebook : '' %> </strong></a><br />
+          Twitter: <a href="<%= author.profile.links.twitter %> "><strong><%= author.profile.links.twitter ? author.profile.links.twitter : '' %> </strong></a><br />
+          Github: <a href="<%= author.profile.links.github %> "><strong><%= author.profile.links.github ? author.profile.links.github : '' %> </strong></a><br />
           About: <%= author.profile.bio %>
         </div>
       </div>
@@ -22,4 +22,5 @@
 
 <%- include('../../partials/footer.ejs') %>
 </body>
+
 </html>

@@ -1,7 +1,6 @@
 const rootController = (req, res) => {
-    res.json({
-        success: true,
-        message: 'Root routes are available.!'
+    res.render('partials/navigation', {
+        title: 'Root - Blog Application'
     })
 }
 

@@ -1,5 +1,4 @@
 <%- include('../../partials/header.ejs') %>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.css" integrity="sha512-2eMmukTZtvwlfQoG8ztapwAH5fXaQBzaMqdljLopRSA0i6YKM8kBAOrSSykxu9NN9HrtD45lIqfONLII2AFL/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
@@ -10,26 +9,9 @@
         <div class="col-md-8 offset-md-2">
           <h4>My Bookmarks</h4>
           <div class="row">
-            <% if(posts.length===0) { %>
             <div class="text-center text-muted">
               <p>There is no bookmarked available right row</p>
             </div>
-            <% } else {%>
-            <% for(let post of posts.reverse()) { %>
-            <div class="card col-sm-3 m-3">
-              <% if(post.thumbnail) { %>
-              <img src="<%= post.thumbnail %>" alt="<%= post.title %> " class="card-img-top mt-3">
-              <% } %>
-              <div class="card-body">
-                <a href="/explorer/<%= post._id %>" style="color: #222;">
-                  <h5>
-                    <%= post.title %>
-                  </h5>
-                </a>
-              </div>
-            </div>
-            <% } %>
-            <% } %>
           </div>
         </div>
       </div>
@@ -39,8 +21,7 @@
 </div>
 
 <%- include('../../partials/footer.ejs') %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js" integrity="sha512-G6Olzu8FeNbYdvxffukJbtbP7ANKuDN/64Mg5zFQQd4VTL5ddtaZPk6zXtWlx1Ir6SQtMLapeobyOnhqb05M0w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="/scripts/profilePicUpload.js"></script>
+<script src="/scripts/bookmark.js"></script>
 </body>
 
 </html>

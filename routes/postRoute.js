@@ -12,7 +12,7 @@ const { isAuthenticated } = require('../middleware/authMiddleware');
 const createPostValidator = require('../validator/postValidator');
 const upload = require('../middleware/uploadMiddleware');
 
-
+// post create route
 postRouter.get('/create', isAuthenticated, createPostGetController);
 postRouter.post(
     '/create',
@@ -21,6 +21,8 @@ postRouter.post(
     createPostValidator,
     createPostPostController
 );
+
+// post edit route
 postRouter.get('/edit/:postId', isAuthenticated, editPostGetController);
 postRouter.post(
     '/edit/:postId',
@@ -29,6 +31,8 @@ postRouter.post(
     createPostValidator,
     editPostPostController
 );
+
+// delete
 postRouter.get('/delete/:postId', isAuthenticated, deletePost);
 postRouter.get('/', isAuthenticated, seeGetAllPostsController);
 

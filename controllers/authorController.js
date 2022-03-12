@@ -8,9 +8,6 @@ const authorProfileGetController = async (req, res, next) => {
         let author = await User.findById(userId)
             .populate({
                 path: 'profile',
-                populate: {
-                    path: 'posts'
-                }
             })
         console.log(author)
         res.render('pages/explorer/author', {

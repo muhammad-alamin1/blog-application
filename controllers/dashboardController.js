@@ -93,29 +93,72 @@ const createProfilePostController = async (req, res, next) => {
 }
 
 // edit profile get controller 
-const editProfileGetController = (req, res, next) => {
-
+const editProfileGetController = async (req, res, next) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user._id });
+        // console.log(profile);
+        res.render('pages/dashboard/edit-profile', {
+            title: 'Edit Profile',
+            flashMessages: Flash.getMessage(req),
+            error: {},
+            profile
+        });
+    } catch (error) {
+        next(error);
+    }
 }
 
 // edit profile post controller
-const editProfilePostController = (req, res, next) => {
+const editProfilePostController = async (req, res, next) => {
+    const { title, name, bio, website, facebook, twitter, github } = req.body;
+    const errors = validationResult(req).formatWith(errorFormatter);
 
+    if (!errors.isEmpty()) {
+        res.render('pages/dashboard/edit-profile', {
+            title: 'Edit Profile',
+            flashMessages: Flash.getMessage(req),
+            error: errors.mapped()
+        });
+    }
+
+    try {
+        const profile = await Profile.findOne({ user: req.user._id });
+
+        const newProfile = await Profile.findOneAndUpdate({ _id: profile._id }, {
+            $set: {
+                name,
+                title,
+                bio,
+                profilePics: req.file.filename || '',
+                links: {
+                    website: website || '',
+                    facebook: facebook || '',
+                    twitter: twitter || '',
+                    github: github || '',
+                },
+            }
+        }, { new: true })
+
+        await User.findOneAndUpdate({ _id: req.user._id }, { $set: { profile: Profile._id, profilePics: newProfile.profilePics } });
+
+        req.flash('success', 'Profile updated successfully.!');
+        res.redirect('/dashboard');
+
+    } catch (error) {
+        next(error);
+    }
 }
 
 // bookmarks get controller
 const bookmarksGetController = async (req, res, next) => {
     try {
         let profile = Profile.findOne({ user: req.user._id })
-            .populate({
-                path: 'bookmarks',
-                model: 'Post',
-                select: 'title, thumbnail'
-            })
-        res.json(profile)
+
+        console.log(profile);
         res.render('pages/dashboard/bookmarks', {
             title: 'My Bookmarks',
             flashMessages: Flash.getMessage(req),
-            posts: profile.bookmarks
+            profile
         });
     } catch (error) {
         next(error);
